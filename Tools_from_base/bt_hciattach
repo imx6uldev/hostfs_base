@@ -1,0 +1,55 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          bt_hciattach
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:    S
+# Default-Stop:
+# Short-Description: 
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+#check bt module bcm or rtl
+#the return value is 1 on behalf of bcm,the return value is 0 on behalf of rtl
+check_bt_module() {
+    echo  $1 > /sys/class/gpio/export
+    value=$(cat /sys/class/gpio/gpio$1/value)
+    echo $1 > /sys/class/gpio/unexport
+    return $value
+}
+
+do_start() {
+    check_bt_module 122 #gpio122
+    if [ $? -eq 1 ]; then
+        if [ -x /usr/bin/brcm ]; then
+            echo -n "Starting brcm_patchram_plus"
+            brcm_patchram_plus  --patchram /lib/firmware/bcm43438a0.hcd --baudrate 3000000 --enable_hci --no2bytes /dev/ttymxc1 &
+            [ $? = 0 ] && echo "." || echo "error"
+            return 0
+        fi
+    else
+        if [ -x /usr/bin/rtk_hciattach ]; then
+            echo -n "Starting rtk_hciattach"
+            rtk_hciattach -s 115200 /dev/ttymxc1 rtk_h5 &
+            [ $? = 0 ] && echo "." || echo "error"
+            return 0
+        fi
+    fi
+}
+
+case "$1" in
+    start)
+    do_start
+        ;;
+    restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+    stop)
+        ;;
+    *)
+        echo "Usage: $0 start|stop" >&2
+        exit 3
+        ;;
+esac

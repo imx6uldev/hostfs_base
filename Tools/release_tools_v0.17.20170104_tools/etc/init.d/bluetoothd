@@ -1,0 +1,47 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          bluetoothd
+# Required-Start:    5
+# Required-Stop:
+# Default-Start:    5
+# Default-Stop:
+# Short-Description: Run /usr/libexec/bluetooth/bluetoothd if it exist
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/libexec/bluetooth 
+
+start() {
+	if [ -x /usr/libexec/bluetooth/bluetoothd ]; then
+		echo -n "Starting bluetoothd Daemon"
+		start-stop-daemon -S -x /usr/libexec/bluetooth/bluetoothd -b
+		[ $? = 0 ] && echo "." || echo "error"
+	fi
+}
+
+stop() { 
+	if [ -x /usr/libexec/bluetooth/bluetoothd ]; then
+		echo -n "Stop bluetoothd Daemon"
+		start-stop-daemon -K -x /usr/libexec/bluetooth/bluetoothd
+		[ $? = 0 ] && echo "." || echo "error"
+		return 0
+	fi
+}
+
+case "$1" in
+    start)
+	start
+        ;;
+    stop)
+    stop
+        ;;
+    restart)
+        ## Stop the service and regardless of whether it was
+        ## running or not, start it again.
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 start|stop|restart" >&2
+        exit 3
+        ;;
+esac

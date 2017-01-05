@@ -1,0 +1,48 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          pulseaudio
+# Required-Start:    5
+# Required-Stop:
+# Default-Start:    5
+# Default-Stop:
+# Short-Description: Run /usr/bin/pulseaudio if it exist
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin  
+
+start() {
+    if [ -x /usr/bin/pulseaudio ]; then
+		echo -n "Starting pulseaudio Daemon"
+		pulseaudio --system -D
+		[ $? = 0 ] && echo "." || echo "error"
+		return 0
+	fi
+}
+
+stop() {
+	if [ -x /usr/bin/pulseaudio ]; then
+		echo -n "Stop pulseaudio Daemon"
+		start-stop-daemon --stop --name pulseaudio
+		[ $? = 0 ] && echo "." || echo "error"
+		return 0
+	fi   
+}
+
+case "$1" in
+    start)
+	start
+        ;;
+    stop)
+    stop
+        ;;
+    restart)
+        ## Stop the service and regardless of whether it was
+        ## running or not, start it again.
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 start|stop|restart" >&2
+        exit 3
+        ;;
+esac

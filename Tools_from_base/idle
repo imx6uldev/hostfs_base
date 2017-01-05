@@ -1,0 +1,5 @@
+#!/home/jinlai/Project/git_smartconn_c/R1B/Firmware/release_all/python/src/Python-2.7.11/imx6ul/bin/python2.7
+
+from idlelib.PyShell import main
+if __name__ == '__main__':
+    main()

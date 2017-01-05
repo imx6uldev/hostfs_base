@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "system running time:"
+cat /proc/uptime | awk -F. '{run_days=$1 / 86400;run_hour=($1 % 86400)/3600; \
+run_minute=($1 % 3600)/60; \
+run_second=$1 % 60; \
+printf("run_days=%d\trun_hour=%d\trun_minute=%d\trun_second=%d\n",run_days,run_hour,run_minute,run_second)}'

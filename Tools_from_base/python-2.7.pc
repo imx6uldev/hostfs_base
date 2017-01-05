@@ -1,0 +1,13 @@
+prefix=/home/jinlai/Project/git_smartconn_c/R1B/Firmware/release_all/python/src/Python-2.7.11/imx6ul
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Python
+Description: Python library
+Requires: 
+Version: 2.7
+Libs.private: -lpthread -ldl  -lpthread -lutil
+Libs: -L${libdir} -lpython2.7
+Cflags: -I${includedir}/python2.7 
+

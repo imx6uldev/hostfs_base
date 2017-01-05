@@ -1,0 +1,57 @@
+state.nau88c10audio {
+    control.1 {
+        iface MIXER
+        name 'Playback Volume'
+        value 127
+        comment {
+            access 'read write'
+            type INTEGER
+            count 1
+            range '0 - 127'
+        }
+    }
+    control.2 {
+        iface MIXER
+        name 'Speaker Playback Volume'
+        value 44
+        comment {
+            access 'read write'
+            type INTEGER
+            count 1
+            range '0 - 63'
+        }
+    }
+    control.3 {
+        iface MIXER
+        name 'ALC Enable Switch'
+        value true
+        comment {
+            access 'read write'
+            type BOOLEAN
+            count 1
+        }
+    }
+    control.4 {
+        iface MIXER
+        name 'Capture Volume'
+        value 127
+        comment {
+            access 'read write'
+            type INTEGER
+            count 1
+            range '0 - 127'
+        }
+    }
+    control.5 {
+        iface MIXER
+        name 'ALC Capture Max Gain'
+        value 5
+        comment {
+            access 'read write'
+            type INTEGER
+            count 1
+            range '0 - 7'
+        }
+    }
+}
+
